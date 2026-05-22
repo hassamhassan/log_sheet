@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" role="img" aria-label="ELD Trip Planner">
+  <rect width="48" height="48" rx="11" fill="#2563EB"/>
+  <path
+    d="M12 31V20h14l3.5 4.5H35v7H12Z"
+    fill="none"
+    stroke="#fff"
+    stroke-width="2.25"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M26 20v4.5"
+    stroke="#fff"
+    stroke-width="2.25"
+    stroke-linecap="round"
+  />
+  <circle cx="17" cy="31" r="2" fill="none" stroke="#fff" stroke-width="2.25"/>
+  <circle cx="32" cy="31" r="2" fill="none" stroke="#fff" stroke-width="2.25"/>
+</svg>

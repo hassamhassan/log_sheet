@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  /* Page content width — matches hero image (1672px) for full-bleed hero + wider cards */
+  --container-page: 95rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/*
+ * Hero image fill (no crop, no gaps):
+ * - aspect-ratio on the container matches hero_img.png (1672×941) so the box
+ *   is always the same shape as the image.
+ * - object-fit: cover scales the image to fill that box; when ratios match,
+ *   nothing is cropped and no background shows through.
+ * - object-position: center keeps the image centered in the box.
+ */
+.app-hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1672 / 941;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow:
+    0 0 0 1px rgb(226 232 240 / 90%),
+    0 1px 2px rgb(15 23 42 / 6%),
+    0 12px 32px -8px rgb(15 23 42 / 12%);
+}
+
+.app-hero__image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.app-hero__fade {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3.5rem;
+  background: linear-gradient(to bottom, transparent, #f8fafc);
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .app-hero {
+    border-radius: 1.25rem;
+  }
+}
+
+/* Readable form fields on mobile (avoids iOS input zoom) */
+@media (max-width: 639px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Trip form — consistent datetime-local across browsers */
+.trip-form input[type='datetime-local'].trip-form-datetime {
+  min-height: 2.75rem;
+  min-width: 0;
+  max-width: 100%;
+  color-scheme: light;
+  line-height: 1.4;
+}
+
+.trip-form input[type='datetime-local'].trip-form-datetime::-webkit-datetime-edit,
+.trip-form input[type='datetime-local'].trip-form-datetime::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.trip-form input[type='datetime-local'].trip-form-datetime::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  margin-left: 0.25rem;
+  opacity: 0.7;
+}
+
+.trip-form input[type='datetime-local'].trip-form-datetime::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Route map — frame, stable height, no overflow */
+.route-map-frame {
+  isolation: isolate;
+}
+
+.route-map-frame .route-map-leaflet,
+.route-map-frame .leaflet-container {
+  font-family: var(--font-sans);
+  background: #e2e8f0;
+  border-radius: inherit;
+  height: 100%;
+  width: 100%;
+}
+
+.route-map-container {
+  contain: layout style;
+  height: clamp(14rem, 38vh, 28rem);
+  min-height: 220px;
+}
+
+@media (min-width: 640px) {
+  .route-map-container {
+    height: clamp(16rem, 44vh, 26rem);
+    min-height: 260px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .route-map-container {
+    height: 28rem;
+    min-height: 28rem;
+  }
+}
+
+.leaflet-tooltip.route-line-tooltip {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgb(15 23 42 / 12%);
+}
+
+.eld-map-marker {
+  background: transparent;
+  border: none;
+}
+
+.eld-map-marker-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  border: 2px solid var(--marker-border);
+  background: var(--marker-bg);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgb(15 23 42 / 25%);
+}
+
+.eld-map-marker-pin span {
+  line-height: 1;
+}
+
+.eld-map-marker-pin--wide {
+  width: 36px;
+  height: 36px;
+  font-size: 9px;
+  letter-spacing: -0.02em;
+}
+
+.leaflet-popup-content {
+  margin: 10px 12px;
+  line-height: 1.4;
+}
+
+/* Daily log sheet — screen spacing & paper feel */
+.log-sheet-stack__item + .log-sheet-stack__item {
+  padding-top: 0.25rem;
+}
+
+.log-sheet-graph-wrap {
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+.log-sheet-graph-wrap:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.log-sheet-graph-svg {
+  min-width: min(100%, 1120px);
+}
+
+@media (max-width: 639px) {
+  .log-sheet-graph-svg {
+    min-width: 960px;
+  }
+}
+
+.trip-form details summary:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Leaflet zoom controls — ensure visible focus */
+.leaflet-bar a:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+/* Hidden log sheets: excluded from screen and print when a single day is selected */
+#daily-log-sheets [aria-hidden='true'] {
+  display: none !important;
+}
+
+.log-sheet-graph-wrap svg {
+  display: block;
+}
+
+/* Stops — future locale toggle (no UI yet) */
+.stop-location[data-show-locale='en'] [data-locale='ur'] {
+  display: none;
+}
+
+.stop-location[data-show-locale='ur'] [data-locale='en'] {
+  display: none;
+}
+
+.stop-location[data-show-locale='all'] [data-locale] {
+  display: block;
+}
+
+.log-sheet-recap {
+  line-height: 1.5;
+}
+
+.log-sheet-recap p:first-child {
+  margin: 0;
+}
+
+.log-sheet-recap p:last-child {
+  margin: 0;
+}
+
+/* ——— Print: daily log sheets only ——— */
+@media print {
+  @page {
+    margin: 0.35in;
+    size: landscape;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  header,
+  footer,
+  .no-print,
+  .compliance-note {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  #daily-log-sheets {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .log-sheet-stack {
+    gap: 0 !important;
+  }
+
+  .log-sheet-paper {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    overflow: visible !important;
+    box-shadow: none !important;
+    margin: 0 auto 0 !important;
+    max-width: 100% !important;
+    border: 1px solid #334155 !important;
+    border-radius: 0 !important;
+  }
+
+  .log-sheet-stack__item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    break-before: page;
+    page-break-before: always;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .log-sheet-stack__item:first-child {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  #daily-log-sheets [aria-hidden='true'] {
+    display: none !important;
+  }
+
+  .log-sheet-graph-wrap {
+    overflow: visible !important;
+    border-width: 1px !important;
+    padding: 0 !important;
+  }
+
+  .log-sheet-graph-wrap svg {
+    min-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .log-sheet-recap {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
