@@ -10,6 +10,10 @@ from .serializers import TripDetailSerializer, TripListSerializer, TripPlanReque
 from .services.exceptions import GeocodingError, RoutePlanningError, ServiceError
 from .services.trip_planner import build_trip_response, create_trip_plan
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 TRIP_PLAN_EXAMPLE = OpenApiExample(
     'Real trip example',
     value={
@@ -90,10 +94,14 @@ class TripPlanView(APIView):
             return error_response(str(exc))
         except ServiceError as exc:
             return error_response(str(exc))
-        except Exception:
-            return error_response(
-                'An unexpected error occurred while planning the trip.',
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        except Exception as exc:
+            logger.exception("Trip planning failed")
+            return Response(
+                {
+                    "error": "An unexpected error occurred while planning the trip.",
+                    "details": str(exc),
+                },
+                status=500,
             )
 
         return Response(result, status=status.HTTP_201_CREATED)
