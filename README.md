@@ -9,7 +9,7 @@ The app accepts a driver's current location, pickup, dropoff, trip start time, a
 - Route geometry and segment breakdown
 - HOS-compliant duty events (driving, breaks, fuel, rest, pickup, dropoff)
 - One filled daily log sheet per calendar day (24 hours each)
-- Saved trip history in SQLite
+- Saved trip history in PostgreSQL
 
 ## Backend tech stack
 
@@ -17,7 +17,7 @@ The app accepts a driver's current location, pickup, dropoff, trip start time, a
 - **Django 6** + **Django REST Framework**
 - **drf-spectacular** (OpenAPI / Swagger)
 - **django-cors-headers** (React dev server)
-- **SQLite** (default database)
+- **PostgreSQL** (database)
 - **requests** (Nominatim geocoding, OSRM routing)
 - **python-dotenv** (optional env loading)
 
@@ -31,20 +31,37 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 2. Install dependencies
+### 2. Start PostgreSQL
+
+With Docker (recommended):
+
+```bash
+docker compose up -d db
+```
+
+Or install PostgreSQL locally and create a database/user matching `backend/.env.example`.
+
+### 3. Configure environment
+
+```bash
+cp backend/.env.example backend/.env
+# Edit backend/.env if your Postgres credentials differ
+```
+
+### 4. Install dependencies
 
 ```bash
 pip install -r backend/requirements.txt
 ```
 
-### 3. Run migrations
+### 5. Run migrations
 
 ```bash
 cd backend
 python manage.py migrate
 ```
 
-### 4. Run development server
+### 6. Run development server
 
 ```bash
 cd backend
